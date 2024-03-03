@@ -28,4 +28,4 @@ replay_pid*
 #html reported files
 .html
 
-.idea
+.idea/
