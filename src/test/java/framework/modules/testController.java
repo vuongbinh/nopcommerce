@@ -16,51 +16,51 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 
 public class testController {
-    public static WebDriver driver;
+    static WebDriver driver;
     public static WebDriverWait wait;
     public static WebElement element;
 
-    public static WebDriver openBrowser(String browserName, boolean isHeadless) {
-        switch (browserName) {
-            case "chrome":
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("window-size=1920,1080");
-                if (isHeadless) {
-                    chromeOptions.addArguments("--Headless");
-                }
-                chromeOptions.addArguments("--remote-allow-origins=*");
-                return new ChromeDriver(chromeOptions);
-            case "firefox":
-                WebDriverManager.firefoxdriver().setup();
-                FirefoxBinary firefoxBinary = new FirefoxBinary();
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                firefoxOptions.setBinary(firefoxBinary);
-                if (isHeadless) {
-                    firefoxOptions.setHeadless(true);
-                }
-                return new FirefoxDriver(firefoxOptions);
-        }
-
-
-        if (browserName.equalsIgnoreCase("chrome")) {
-            WebDriverManager.chromedriver().setup();
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("window-size=1920,1080");
-            if (isHeadless) {
-                options.addArguments("--Headless");
-            }
-            options.addArguments("--remote-allow-origins=*");
-            return new ChromeDriver(options);
-        } else if (browserName.equalsIgnoreCase("firefox")) {
-            WebDriverManager.firefoxdriver().setup();
-            FirefoxBinary firefoxBinary = new FirefoxBinary();
-            FirefoxOptions options = new FirefoxOptions();
-            options.setBinary(firefoxBinary);
-            options.setHeadless(true);
-            return new FirefoxDriver(options);
-        } else throw new IllegalArgumentException("The Browser " + browserName + " does not support");
-    }
+//    public static WebDriver openBrowser(String browserName, boolean isHeadless) {
+//        switch (browserName) {
+//            case "chrome":
+//                WebDriverManager.chromedriver().setup();
+//                ChromeOptions chromeOptions = new ChromeOptions();
+//                chromeOptions.addArguments("window-size=1920,1080");
+//                if (isHeadless) {
+//                    chromeOptions.addArguments("--Headless");
+//                }
+//                chromeOptions.addArguments("--remote-allow-origins=*");
+//                return new ChromeDriver(chromeOptions);
+//            case "firefox":
+//                WebDriverManager.firefoxdriver().setup();
+//                FirefoxBinary firefoxBinary = new FirefoxBinary();
+//                FirefoxOptions firefoxOptions = new FirefoxOptions();
+//                firefoxOptions.setBinary(firefoxBinary);
+//                if (isHeadless) {
+//                    firefoxOptions.setHeadless(true);
+//                }
+//                return new FirefoxDriver(firefoxOptions);
+//        }
+//
+//
+//        if (browserName.equalsIgnoreCase("chrome")) {
+//            WebDriverManager.chromedriver().setup();
+//            ChromeOptions options = new ChromeOptions();
+//            options.addArguments("window-size=1920,1080");
+//            if (isHeadless) {
+//                options.addArguments("--Headless");
+//            }
+//            options.addArguments("--remote-allow-origins=*");
+//            return new ChromeDriver(options);
+//        } else if (browserName.equalsIgnoreCase("firefox")) {
+//            WebDriverManager.firefoxdriver().setup();
+//            FirefoxBinary firefoxBinary = new FirefoxBinary();
+//            FirefoxOptions options = new FirefoxOptions();
+//            options.setBinary(firefoxBinary);
+//            options.setHeadless(true);
+//            return new FirefoxDriver(options);
+//        } else throw new IllegalArgumentException("The Browser " + browserName + " does not support");
+//    }
 
     protected static Object[][] getDataFromFile(Sheet excelSheet) {
         int rowCOUNT = excelSheet.getLastRowNum() - excelSheet.getFirstRowNum();
@@ -74,14 +74,23 @@ public class testController {
         return object;
     }
 
-    @Parameters({"browserName", "isHeadless"})
+//    @Parameters({"browserName", "isHeadless"})
     @BeforeClass
-    void setup(String browserName, boolean isHeadless) {
-        driver = openBrowser(browserName, isHeadless);
+    void setup() {
+//        driver = openBrowser(browserName, isHeadless);
+        WebDriverManager.chromedriver().setup();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+        driver = new ChromeDriver(options);
     }
 
     @AfterClass(alwaysRun = true)
     void tearDown() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         driver.close();
     }
 }
