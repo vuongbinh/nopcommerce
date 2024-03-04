@@ -9,13 +9,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Properties;
 import java.util.Random;
 
 public class register extends pageController {
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM-dd-yyyy");
     String registerURL = baseURL.concat("/register");
     {
         try {
@@ -61,10 +58,10 @@ public class register extends pageController {
         driver.findElement(tbxFirstname).sendKeys(cus.getFirstName());
         driver.findElement(tbxLastname).sendKeys(cus.getLastName());
 
-        String arr[] = cus.getDOB().split("-");
-        driver.findElement(drdDOB).sendKeys(arr[1]);
-        driver.findElement(drdMOB).sendKeys(arr[0]);
-        driver.findElement(drdYOB).sendKeys(arr[2]);
+        String date[] = cus.getDOB().split("-");
+        driver.findElement(drdDOB).sendKeys(date[1]);
+        driver.findElement(drdMOB).sendKeys(date[0]);
+        driver.findElement(drdYOB).sendKeys(date[2]);
 
         driver.findElement(tbxEmail).sendKeys(cus.getEmail());
         driver.findElement(tbxCompany).sendKeys(cus.getCompanyName());

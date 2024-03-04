@@ -26,7 +26,7 @@ replay_pid*
 .exe
 
 #html reported files
-.html
-
+*.html
+reports/
 .idea/
 target/

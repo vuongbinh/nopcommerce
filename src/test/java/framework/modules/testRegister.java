@@ -18,7 +18,7 @@ public class testRegister extends testController{
             throw new RuntimeException(e);
         }
     }
-    @Test
+    @Test(testName = "Verify customer is able to create a new account")
     void verifyRegisterURL(){
         register registerPage =  new register(driver);
         registerPage.open();

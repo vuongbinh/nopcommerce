@@ -2,9 +2,6 @@ package framework.pages;
 
 import org.openqa.selenium.WebDriver;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 public abstract class pageController {
