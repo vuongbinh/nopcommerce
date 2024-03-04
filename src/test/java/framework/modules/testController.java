@@ -100,7 +100,8 @@ public class testController {
     }
     public static WebDriver openBrowser(String browserName) {
         if (browserName.equalsIgnoreCase("chrome")) {
-            WebDriverManager.chromedriver().setup();
+//            driver = new ChromeDriver();
+//            WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
             options.addArguments("window-size=1920,1080");
             options.addArguments("--remote-allow-origins=*");
@@ -111,7 +112,7 @@ public class testController {
             FirefoxBinary firefoxBinary = new FirefoxBinary();
             FirefoxOptions options = new FirefoxOptions();
             options.setBinary(firefoxBinary);
-            options.setHeadless(true);
+//            options.setHeadless(true);
             return new FirefoxDriver(options);
         } else if (browserName.equalsIgnoreCase("edge")) {
             WebDriverManager.edgedriver().setup();
