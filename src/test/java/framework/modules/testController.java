@@ -108,14 +108,14 @@ public class testController {
             options.addArguments("--Headless");
             return new ChromeDriver(options);
         } else if (browserName.equalsIgnoreCase("firefox")) {
-            WebDriverManager.firefoxdriver().setup();
+//            WebDriverManager.firefoxdriver().setup();
             FirefoxBinary firefoxBinary = new FirefoxBinary();
             FirefoxOptions options = new FirefoxOptions();
             options.setBinary(firefoxBinary);
 //            options.setHeadless(true);
             return new FirefoxDriver(options);
         } else if (browserName.equalsIgnoreCase("edge")) {
-            WebDriverManager.edgedriver().setup();
+//            WebDriverManager.edgedriver().setup();
             EdgeOptions options = new EdgeOptions();
             options.addArguments("window-size=1920,1080");
             options.addArguments("--remote-allow-origins=*");
