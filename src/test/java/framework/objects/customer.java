@@ -1,15 +1,34 @@
 package framework.objects;
 
-import java.util.Date;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class customer extends personal {
     private String companyName;
     private String password;
-    public customer(String lastName, String firstName, Date DOB, String email,String companyName) {
+    Properties pros = new Properties();
+    {
+        try {
+            InputStream input = new FileInputStream("src/test/java/framework/supporter/resources/config.properties");
+            pros.load(input);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public customer(String lastName, String firstName, String DOB, String email, String companyName) {
         super(lastName, firstName, DOB, email);
         this.companyName = companyName;
-        this.password = "Test!234";
+        this.password = pros.getProperty("password");
     }
+
+    public customer() {
+        super();
+        this.companyName = faker.company().name();
+        this.password = pros.getProperty("password");
+    }
+
     public void logCustomerInfo() {
         System.out.println(this.getFirstName());
         System.out.println(this.getLastName());
@@ -20,7 +39,7 @@ public class customer extends personal {
     public String getCompanyName() {
         return companyName;
     }
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public String getPassword() {
+        return password;
     }
 }
