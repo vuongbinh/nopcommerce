@@ -112,7 +112,7 @@ public class testController {
             FirefoxBinary firefoxBinary = new FirefoxBinary();
             FirefoxOptions options = new FirefoxOptions();
             options.setBinary(firefoxBinary);
-//            options.setHeadless(true);
+            options.addArguments("--Headless");
             return new FirefoxDriver(options);
         } else if (browserName.equalsIgnoreCase("edge")) {
 //            WebDriverManager.edgedriver().setup();
