@@ -2,7 +2,6 @@
 <suite name="demo.nopcommerce.com" verbose="1" >
     <test name="SMOKE">
         <parameter name="browserName" value="chrome"></parameter>
-        <parameter name="isHeadless" value="true"></parameter>
         <classes>
             <class name="framework.modules.testRegister"/>
         </classes>

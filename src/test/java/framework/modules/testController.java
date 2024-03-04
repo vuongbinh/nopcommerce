@@ -39,10 +39,10 @@ public class testController {
     public static WebElement element;
     static WebDriver driver;
     Properties pros = new Properties();
-    @Parameters({"browserName", "isHeadless"})
+    @Parameters({"browserName"})
     @BeforeTest
-    public void setup(String browserName, boolean isHeadless) {
-        driver = openBrowser(browserName, isHeadless);
+    public void setup(String browserName) {
+        driver = openBrowser(browserName);
         spark = sparkSetup();
         reports.setSystemInfo("Environment", "QA");
         reports.attachReporter(spark);
@@ -99,33 +99,27 @@ public class testController {
         //Returns the captured file path
         return destination;
     }
-    public static WebDriver openBrowser(String browserName, boolean isHeadless) {
+    public static WebDriver openBrowser(String browserName) {
         if (browserName.equalsIgnoreCase("chrome")) {
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
             options.addArguments("window-size=1920,1080");
             options.addArguments("--remote-allow-origins=*");
-            if (isHeadless){
-                options.addArguments("--Headless");
-            }
+            options.addArguments("--Headless");
             return new ChromeDriver(options);
         } else if (browserName.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();
             FirefoxBinary firefoxBinary = new FirefoxBinary();
             FirefoxOptions options = new FirefoxOptions();
             options.setBinary(firefoxBinary);
-            if (isHeadless){
-                options.setHeadless(true);
-            }
+            options.setHeadless(true);
             return new FirefoxDriver(options);
         } else if (browserName.equalsIgnoreCase("edge")) {
             WebDriverManager.edgedriver().setup();
             EdgeOptions options = new EdgeOptions();
             options.addArguments("window-size=1920,1080");
             options.addArguments("--remote-allow-origins=*");
-            if (isHeadless){
-                options.addArguments("--Headless");
-            }
+            options.addArguments("--Headless");
             return new EdgeDriver(options);
         } else throw new IllegalArgumentException("The Browser " + browserName + " does not support");
     }
