@@ -69,7 +69,6 @@ public class testController {
     @AfterTest
     public void cleanUp(){
         reports.flush();
-        driver.close();
         driver.quit();
     }
     private static ExtentSparkReporter sparkSetup(){
