@@ -66,7 +66,7 @@ public class testController {
         } else logger.log(Status.INFO, "N/A");
     }
 
-    @AfterTest(alwaysRun = true)
+    @AfterTest
     public void cleanUp(){
         reports.flush();
         driver.close();
