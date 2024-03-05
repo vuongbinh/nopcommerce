@@ -1,9 +1,10 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="demo.nopcommerce.com" verbose="1" >
     <test name="SMOKE">
-        <parameter name="browserName" value="firefox"></parameter>
+        <parameter name="browserName" value="firefox"/>
         <classes>
             <class name="framework.modules.TestRegister"/>
+            <class name="framework.modules.TestLogin"/>
         </classes>
     </test>
 </suite>

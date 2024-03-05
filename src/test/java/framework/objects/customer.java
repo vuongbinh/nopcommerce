@@ -1,14 +1,13 @@
 package framework.objects;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 public class customer extends personal {
-    private String companyName;
-    private String password;
     Properties pros = new Properties();
+    private final String companyName;
+    private final String password;
+
     {
         try {
             InputStream input = new FileInputStream("src/test/java/framework/supporter/resources/config.properties");
@@ -17,6 +16,7 @@ public class customer extends personal {
             throw new RuntimeException(e);
         }
     }
+
     public customer(String lastName, String firstName, String DOB, String email, String companyName) {
         super(lastName, firstName, DOB, email);
         this.companyName = companyName;
@@ -35,10 +35,21 @@ public class customer extends personal {
         System.out.println(this.getDOB());
         System.out.println(this.getEmail());
         System.out.println(this.getCompanyName());
+        try {
+            pros.setProperty("email",this.getEmail());
+            pros.setProperty("password",this.password);
+            OutputStream output = new FileOutputStream("src/test/java/framework/supporter/resources/config.properties");
+            pros.store(output,null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
+
     public String getCompanyName() {
         return companyName;
     }
+
     public String getPassword() {
         return password;
     }

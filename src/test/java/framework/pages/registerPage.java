@@ -1,27 +1,30 @@
 package framework.pages;
 
 import framework.objects.customer;
-import framework.supporter.SupportProperty;
+import framework.supporter.FileUltils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Random;
 
-public class register extends pageController {
+public class registerPage extends pageController {
 
-    String registerURL = baseURL.concat("/register");
-    SupportProperty spPros = new SupportProperty();
-    public register(WebDriver driver) {
+    String fileUser = "src/test/java/framework/supporter/resources/userAccounts.properties";
+    public registerPage(WebDriver driver) {
         super(driver);
     }
+
     @Override
     public void open() {
-        driver.get(registerURL);
+        pros = spPros.load(locFile);
+        driver.get(pros.getProperty("url_RegisterPage"));
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
     }
+
     public void open(String url) {
         driver.get(url);
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
@@ -67,6 +70,13 @@ public class register extends pageController {
 
         driver.findElement(tbxPassword).sendKeys(cus.getPassword());
         driver.findElement(tbxConfirmpassword).sendKeys(cus.getPassword());
+
+        FileUltils file = new FileUltils();
+        try {
+            file.saveToFile(cus.getEmail(), cus.getPassword(),fileUser);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void submitForm() {
@@ -74,4 +84,5 @@ public class register extends pageController {
         By btnRegister = By.id(pros.getProperty("id_btnRegister"));
         driver.findElement(btnRegister).click();
     }
+
 }
