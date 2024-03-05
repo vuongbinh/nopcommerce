@@ -6,6 +6,7 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.aventstack.extentreports.reporter.configuration.ViewName;
+import framework.supporter.SupportProperty;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -30,14 +31,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-public class TestController {
+public class TestController extends SupportProperty {
+    public final String locFile = "locators";
     public static ExtentReports reports = new ExtentReports();
     public static ExtentSparkReporter spark;
     public static ExtentTest logger;
     public static WebDriverWait wait;
     public static WebElement element;
-    static WebDriver driver;
-    Properties pros = new Properties();
+    public static WebDriver driver;
+    public Properties pros = new java.util.Properties();
     @Parameters({"browserName"})
     @BeforeTest
     public void setup(String browserName) {
