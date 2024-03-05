@@ -73,22 +73,18 @@ public class TestController extends SupportProperty {
 
     public static WebDriver openBrowser(String browserName) {
         if (browserName.equalsIgnoreCase("chrome")) {
-//            driver = new ChromeDriver();
-//            WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
             options.addArguments("window-size=1920,1080");
             options.addArguments("--remote-allow-origins=*");
             options.addArguments("--Headless");
             return new ChromeDriver(options);
         } else if (browserName.equalsIgnoreCase("firefox")) {
-//            WebDriverManager.firefoxdriver().setup();
             FirefoxBinary firefoxBinary = new FirefoxBinary();
             FirefoxOptions options = new FirefoxOptions();
             options.setBinary(firefoxBinary);
-//            options.addArguments("--Headless");
+            options.addArguments("--Headless");
             return new FirefoxDriver(options);
         } else if (browserName.equalsIgnoreCase("edge")) {
-//            WebDriverManager.edgedriver().setup();
             EdgeOptions options = new EdgeOptions();
             options.addArguments("window-size=1920,1080");
             options.addArguments("--remote-allow-origins=*");
