@@ -32,14 +32,79 @@ import java.util.Date;
 import java.util.Properties;
 
 public class TestController extends SupportProperty {
-    public final String locFile = "locators";
     public static ExtentReports reports = new ExtentReports();
     public static ExtentSparkReporter spark;
     public static ExtentTest logger;
     public static WebDriverWait wait;
     public static WebElement element;
     public static WebDriver driver;
-    public Properties pros = new java.util.Properties();
+    public final String locFile = "locators";
+    public Properties pros = new Properties();
+    public SupportProperty spPros = new SupportProperty();
+
+    private static ExtentSparkReporter sparkSetup() {
+        spark = new ExtentSparkReporter(new File(System.getProperty("user.dir") + "/reports/Automation_report-" + System.currentTimeMillis() + ".html")).viewConfigurer()
+                .viewOrder()
+                .as(new ViewName[]{
+                        ViewName.DASHBOARD,
+                        ViewName.TEST,
+                        ViewName.EXCEPTION,
+                        ViewName.LOG
+                })
+                .apply();
+        spark.config().setTheme(Theme.STANDARD);
+        spark.config().setDocumentTitle("Automation Report" + System.currentTimeMillis());
+        spark.config().setReportName("SMOKE DEMO");
+        return spark;
+    }
+
+    public static String getScreenshot(WebDriver driver, String screenshotName) throws Exception {
+        //below line is just to append the date format with the screenshot name to avoid duplicate names
+        String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+        TakesScreenshot ts = (TakesScreenshot) driver;
+        File source = ts.getScreenshotAs(OutputType.FILE);
+        //after execution, you could see a folder "FailedTestsScreenshots" under src folder
+        String destination = System.getProperty("user.dir") + "/reports/FailedTestsScreenshots/" + screenshotName + dateName + ".png";
+        File finalDestination = new File(destination);
+        FileUtils.copyFile(source, finalDestination);
+        //Returns the captured file path
+        return destination;
+    }
+
+    public static WebDriver openBrowser(String browserName) {
+        if (browserName.equalsIgnoreCase("chrome")) {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("window-size=1920,1080");
+            options.addArguments("--remote-allow-origins=*");
+            options.addArguments("--Headless");
+            return new ChromeDriver(options);
+        } else if (browserName.equalsIgnoreCase("firefox")) {
+            FirefoxBinary firefoxBinary = new FirefoxBinary();
+            FirefoxOptions options = new FirefoxOptions();
+            options.setBinary(firefoxBinary);
+            options.addArguments("--Headless");
+            return new FirefoxDriver(options);
+        } else if (browserName.equalsIgnoreCase("edge")) {
+            EdgeOptions options = new EdgeOptions();
+            options.addArguments("window-size=1920,1080");
+            options.addArguments("--remote-allow-origins=*");
+            options.addArguments("--Headless");
+            return new EdgeDriver(options);
+        } else throw new IllegalArgumentException("The Browser " + browserName + " does not support");
+    }
+
+    protected static Object[][] getDataFromFile(Sheet excelSheet) {
+        int rowCOUNT = excelSheet.getLastRowNum() - excelSheet.getFirstRowNum();
+        Object[][] object = new Object[rowCOUNT][2];
+        for (int i = 0; i < rowCOUNT; i++) {
+            Row row = excelSheet.getRow(i + 1);
+            for (int j = 0; j < row.getLastCellNum(); j++) {
+                object[i][j] = row.getCell(j).toString();
+            }
+        }
+        return object;
+    }
+
     @Parameters({"browserName"})
     @BeforeTest
     public void setup(String browserName) {
@@ -48,11 +113,13 @@ public class TestController extends SupportProperty {
         reports.setSystemInfo("Environment", "QA");
         reports.attachReporter(spark);
     }
+
     @BeforeMethod
     public void register(Method method) {
         String testName = method.getName();
         logger = reports.createTest(testName);
     }
+
     @AfterMethod
     public void captureStatus(ITestResult result) throws Exception {
         if (result.getStatus() == ITestResult.SUCCESS) {
@@ -68,71 +135,8 @@ public class TestController extends SupportProperty {
     }
 
     @AfterTest
-    public void cleanUp(){
+    public void cleanUp() {
         reports.flush();
         driver.quit();
-    }
-    private static ExtentSparkReporter sparkSetup(){
-        spark = new ExtentSparkReporter(new File(System.getProperty("user.dir") + "/reports/Automation_report-" + System.currentTimeMillis() + ".html")).viewConfigurer()
-                .viewOrder()
-                .as(new ViewName[]{
-                        ViewName.DASHBOARD,
-                        ViewName.TEST,
-                        ViewName.EXCEPTION,
-                        ViewName.LOG
-                })
-                .apply();
-        spark.config().setTheme(Theme.STANDARD);
-        spark.config().setDocumentTitle("Automation Report" + System.currentTimeMillis());
-        spark.config().setReportName("SMOKE DEMO");
-        return spark;
-    }
-    public static String getScreenshot(WebDriver driver, String screenshotName) throws Exception {
-        //below line is just to append the date format with the screenshot name to avoid duplicate names
-        String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
-        TakesScreenshot ts = (TakesScreenshot) driver;
-        File source = ts.getScreenshotAs(OutputType.FILE);
-        //after execution, you could see a folder "FailedTestsScreenshots" under src folder
-        String destination = System.getProperty("user.dir") + "/reports/FailedTestsScreenshots/"+screenshotName+dateName+".png";
-        File finalDestination = new File(destination);
-        FileUtils.copyFile(source, finalDestination);
-        //Returns the captured file path
-        return destination;
-    }
-    public static WebDriver openBrowser(String browserName) {
-        if (browserName.equalsIgnoreCase("chrome")) {
-//            driver = new ChromeDriver();
-//            WebDriverManager.chromedriver().setup();
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("window-size=1920,1080");
-            options.addArguments("--remote-allow-origins=*");
-            options.addArguments("--Headless");
-            return new ChromeDriver(options);
-        } else if (browserName.equalsIgnoreCase("firefox")) {
-//            WebDriverManager.firefoxdriver().setup();
-            FirefoxBinary firefoxBinary = new FirefoxBinary();
-            FirefoxOptions options = new FirefoxOptions();
-            options.setBinary(firefoxBinary);
-            options.addArguments("--Headless");
-            return new FirefoxDriver(options);
-        } else if (browserName.equalsIgnoreCase("edge")) {
-//            WebDriverManager.edgedriver().setup();
-            EdgeOptions options = new EdgeOptions();
-            options.addArguments("window-size=1920,1080");
-            options.addArguments("--remote-allow-origins=*");
-            options.addArguments("--Headless");
-            return new EdgeDriver(options);
-        } else throw new IllegalArgumentException("The Browser " + browserName + " does not support");
-    }
-    protected static Object[][] getDataFromFile(Sheet excelSheet) {
-        int rowCOUNT = excelSheet.getLastRowNum() - excelSheet.getFirstRowNum();
-        Object[][] object = new Object[rowCOUNT][2];
-        for (int i = 0; i < rowCOUNT; i++) {
-            Row row = excelSheet.getRow(i + 1);
-            for (int j = 0; j < row.getLastCellNum(); j++) {
-                object[i][j] = row.getCell(j).toString();
-            }
-        }
-        return object;
     }
 }

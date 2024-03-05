@@ -1,13 +1,11 @@
 package framework.supporter;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 public class SupportProperty {
+    Properties pros = new Properties();
     public Properties load(String fileName) {
-        Properties pros = new java.util.Properties();
         {
             try {
                 InputStream input = new FileInputStream("src/test/java/framework/supporter/resources/" + fileName + ".properties");
@@ -18,5 +16,14 @@ public class SupportProperty {
         }
         return pros;
     }
-
+    public void saveAccount(String email, String pwd){
+        try {
+            pros.setProperty("email",email);
+            pros.setProperty("password",pwd);
+            OutputStream output = new FileOutputStream("src/test/java/framework/supporter/resources/config.properties");
+            pros.store(output,null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
