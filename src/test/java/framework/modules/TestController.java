@@ -6,7 +6,6 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.aventstack.extentreports.reporter.configuration.ViewName;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -31,7 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-public class testController {
+public class TestController {
     public static ExtentReports reports = new ExtentReports();
     public static ExtentSparkReporter spark;
     public static ExtentTest logger;
@@ -59,7 +58,7 @@ public class testController {
         } else if (result.getStatus() == ITestResult.FAILURE) {
             logger.log(Status.FAIL, "The test method name as : " + result.getTestName() + " is failed");
             logger.log(Status.FAIL, "The test case failed due to : " + result.getThrowable());
-            String screenshotPath = testController.getScreenshot(driver, result.getTestName());
+            String screenshotPath = TestController.getScreenshot(driver, result.getTestName());
             logger.addScreenCaptureFromPath(screenshotPath);
         } else if (result.getStatus() == ITestResult.SKIP) {
             logger.log(Status.SKIP, "The test method name as : " + result.getTestName() + " has been skipped");

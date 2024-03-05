@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class testRegister extends testController{
+public class TestRegister extends TestController {
     {
         try {
             InputStream input = new FileInputStream("src/test/java/framework/supporter/resources/locators.properties");
@@ -19,7 +19,7 @@ public class testRegister extends testController{
         }
     }
     @Test(testName = "Verify customer is able to create a new account")
-    void verifyRegisterURL(){
+    void verifyfuncRegister(){
         register registerPage =  new register(driver);
         registerPage.open();
         Assert.assertTrue(driver.getCurrentUrl().contains("/register"));
@@ -27,5 +27,10 @@ public class testRegister extends testController{
         registerPage.submitForm();
         Assert.assertEquals(driver.findElement(By.className("result")).getText(),"Your registration completed");
         Assert.assertTrue(driver.findElement(By.xpath(pros.getProperty("xpath_btnContinue"))).isDisplayed());
+    }
+    @Test(testName = "Verify that customer can go to Register from Home page")
+    void gotoRegisterPage(){
+        register regPage = new register(driver);
+        regPage.open(regPage.getBaseURL());
     }
 }

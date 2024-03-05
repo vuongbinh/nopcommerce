@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class testLogin extends testController {
+public class TestLogin extends TestController {
     @Test
     void verifyLoginPage() {
         login loginPage = new login(driver);

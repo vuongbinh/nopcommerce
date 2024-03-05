@@ -3,7 +3,7 @@
     <test name="SMOKE">
         <parameter name="browserName" value="firefox"></parameter>
         <classes>
-            <class name="framework.modules.testRegister"/>
+            <class name="framework.modules.TestRegister"/>
         </classes>
     </test>
 </suite>
