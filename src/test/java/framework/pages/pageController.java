@@ -11,5 +11,10 @@ public abstract class pageController {
         this.driver = driver;
     }
     protected abstract void open();
+
+    public String getBaseURL() {
+        return baseURL;
+    }
+
     Properties pros = new Properties();
 }
