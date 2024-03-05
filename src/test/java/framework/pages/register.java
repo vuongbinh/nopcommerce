@@ -1,31 +1,22 @@
 package framework.pages;
 
 import framework.objects.customer;
+import framework.supporter.SupportProperty;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.Duration;
 import java.util.Random;
 
 public class register extends pageController {
+
     String registerURL = baseURL.concat("/register");
-    {
-        try {
-            InputStream input = new FileInputStream("src/test/java/framework/supporter/resources/locators.properties");
-            pros.load(input);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    SupportProperty spPros = new SupportProperty();
     public register(WebDriver driver) {
         super(driver);
     }
-
     @Override
     public void open() {
         driver.get(registerURL);
@@ -38,7 +29,7 @@ public class register extends pageController {
 
     public void fillFormRandom() {
         customer cus = new customer();
-
+        pros = spPros.load(locFile);
         By selGenderMale = By.id(pros.getProperty("id_selGenderMale"));
         By selGenderFemale = By.id(pros.getProperty("id_selGenderFemale"));
         By tbxFirstname = By.id(pros.getProperty("id_tbxFirstname"));
@@ -79,6 +70,7 @@ public class register extends pageController {
     }
 
     public void submitForm() {
+        pros = spPros.load(locFile);
         By btnRegister = By.id(pros.getProperty("id_btnRegister"));
         driver.findElement(btnRegister).click();
     }

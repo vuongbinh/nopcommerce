@@ -1,23 +1,13 @@
 package framework.modules;
 
 import framework.pages.register;
+import framework.supporter.SupportProperty;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 public class TestRegister extends TestController {
-    {
-        try {
-            InputStream input = new FileInputStream("src/test/java/framework/supporter/resources/locators.properties");
-            pros.load(input);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    SupportProperty spPros = new SupportProperty();
     @Test(testName = "Verify customer is able to create a new account")
     void verifyfuncRegister(){
         register registerPage =  new register(driver);
@@ -29,8 +19,19 @@ public class TestRegister extends TestController {
         Assert.assertTrue(driver.findElement(By.xpath(pros.getProperty("xpath_btnContinue"))).isDisplayed());
     }
     @Test(testName = "Verify that customer can go to Register from Home page")
-    void gotoRegisterPage(){
+    void homeToRegister(){
+        pros = spPros.load(locFile);
         register regPage = new register(driver);
         regPage.open(regPage.getBaseURL());
+        driver.findElement(By.xpath(pros.getProperty("xpath_lnkRegister"))).click();
+        Assert.assertTrue(driver.getCurrentUrl().contains("/register"));
+    }
+    @Test(testName = "Verify that customer can go to Register from Login page")
+    void loginToRegister(){
+        pros = spPros.load(locFile);
+        register regPage = new register(driver);
+        regPage.open(regPage.getBaseURL()+"/login");
+        driver.findElement(By.xpath(pros.getProperty("xpath_btnRegister"))).click();
+        Assert.assertTrue(driver.getCurrentUrl().contains("/register"));
     }
 }
