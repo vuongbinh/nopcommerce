@@ -31,6 +31,10 @@ public class register extends pageController {
         driver.get(registerURL);
         new WebDriverWait(driver, Duration.ofSeconds(60)).until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
     }
+    public void open(String url) {
+        driver.get(url);
+        new WebDriverWait(driver, Duration.ofSeconds(60)).until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+    }
 
     public void fillFormRandom() {
         customer cus = new customer();
@@ -58,7 +62,7 @@ public class register extends pageController {
         driver.findElement(tbxFirstname).sendKeys(cus.getFirstName());
         driver.findElement(tbxLastname).sendKeys(cus.getLastName());
 
-        String date[] = cus.getDOB().split("-");
+        String[] date = cus.getDOB().split("-");
         driver.findElement(drdDOB).sendKeys(date[1]);
         driver.findElement(drdMOB).sendKeys(date[0]);
         driver.findElement(drdYOB).sendKeys(date[2]);
