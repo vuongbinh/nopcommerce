@@ -48,7 +48,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '11'
           overwrite-settings: false
       - name: Analyze with SonarCloud
         # You can pin the exact commit or the version.
